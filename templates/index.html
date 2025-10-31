@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Link external interactive CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <title>Hotel Reservation Prediction</title>
+  </head>
+
+  <body>
+    <div class="app-card">
+      <div class="form-wrap">
+        <h2 class="app-title">Hotel Reservation Prediction</h2>
+        <p class="app-sub">Enter details below and click <b>Predict</b> to see if the reservation may be cancelled.</p>
+
+        <form class="form" method="POST">
+
+          <div class="field">
+            <input type="number" class="input" id="lead_time" name="lead_time" placeholder=" " required>
+            <label for="lead_time">Lead Time (days)</label>
+          </div>
+
+          <div class="field">
+            <input type="number" class="input" id="no_of_special_requests" name="no_of_special_requests" placeholder=" " required>
+            <label for="no_of_special_requests">Number of Special Requests</label>
+          </div>
+
+          <div class="field">
+            <input type="number" step="0.01" class="input" id="avg_price_per_room" name="avg_price_per_room" placeholder=" " required>
+            <label for="avg_price_per_room">Average Price per Room</label>
+          </div>
+
+          <div class="field">
+            <select class="select" id="arrival_month" name="arrival_month" required>
+              <option value="" disabled selected hidden>Select Month</option>
+              <option value="1">January</option><option value="2">February</option>
+              <option value="3">March</option><option value="4">April</option>
+              <option value="5">May</option><option value="6">June</option>
+              <option value="7">July</option><option value="8">August</option>
+              <option value="9">September</option><option value="10">October</option>
+              <option value="11">November</option><option value="12">December</option>
+            </select>
+            <label for="arrival_month">Arrival Month</label>
+          </div>
+
+          <div class="field">
+            <select class="select" id="arrival_date" name="arrival_date" required>
+              <option value="" disabled selected hidden>Select Date</option>
+              {% for i in range(1,32) %}
+                <option value="{{ i }}">{{ i }}</option>
+              {% endfor %}
+            </select>
+            <label for="arrival_date">Arrival Date</label>
+          </div>
+
+          <div class="field">
+            <select class="select" id="market_segment_type" name="market_segment_type" required>
+              <option value="" disabled selected hidden>Select Market Segment</option>
+              <option value="0">Aviation</option>
+              <option value="1">Complementary</option>
+              <option value="2">Corporate</option>
+              <option value="3">Offline</option>
+              <option value="4">Online</option>
+            </select>
+            <label for="market_segment_type">Market Segment Type</label>
+          </div>
+
+          <div class="field">
+            <input type="number" class="input" id="no_of_week_nights" name="no_of_week_nights" placeholder=" " required>
+            <label for="no_of_week_nights">Number of Week Nights</label>
+          </div>
+
+          <div class="field">
+            <input type="number" class="input" id="no_of_weekend_nights" name="no_of_weekend_nights" placeholder=" " required>
+            <label for="no_of_weekend_nights">Number of Weekend Nights</label>
+          </div>
+
+          <div class="field">
+            <select class="select" id="type_of_meal_plan" name="type_of_meal_plan" required>
+              <option value="" disabled selected hidden>Select Meal Plan</option>
+              <option value="0">Meal Plan 1</option>
+              <option value="1">Meal Plan 2</option>
+              <option value="2">Meal Plan 3</option>
+              <option value="3">Not Selected</option>
+            </select>
+            <label for="type_of_meal_plan">Type of Meal Plan</label>
+          </div>
+
+          <div class="field">
+            <select class="select" id="room_type_reserved" name="room_type_reserved" required>
+              <option value="" disabled selected hidden>Select Room Type</option>
+              <option value="0">Room Type 1</option>
+              <option value="1">Room Type 2</option>
+              <option value="2">Room Type 3</option>
+              <option value="3">Room Type 4</option>
+              <option value="4">Room Type 5</option>
+              <option value="5">Room Type 6</option>
+              <option value="6">Room Type 7</option>
+            </select>
+            <label for="room_type_reserved">Room Type Reserved</label>
+          </div>
+
+          <div class="row-center" style="margin-top: 16px;">
+            <button type="submit" class="btn">Predict</button>
+            <button type="reset" class="btn btn-ghost">Reset</button>
+          </div>
+        </form>
+      </div>
+
+      <aside class="side">
+        {% if preds is not none %}
+        <div class="result">
+          {% if preds == 0 %}
+          <p class="danger">❌ The customer is likely to cancel the reservation.</p>
+          {% elif preds == 1 %}
+          <p class="success">✅ The customer is not going to cancel the reservation.</p>
+          {% endif %}
+        </div>
+        {% endif %}
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p>Powered by Flask · Interactive AI-Driven Prediction UI</p>
+    </footer>
+  </body>
+</html>

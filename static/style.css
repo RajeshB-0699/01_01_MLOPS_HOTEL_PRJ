@@ -1,0 +1,285 @@
+/* styles.css
+   Interactive, modern, accessible styles for your Flask form page.
+   Uses CSS variables, focus/hover states, subtle animations, and responsiveness.
+*/
+
+/* -------------------------
+   Theme / variables
+   ------------------------- */
+:root{
+  --bg: #0f1724;               /* deep navy */
+  --card: #0b1220;             /* card background */
+  --muted: #9aa7bf;            /* muted text */
+  --text: #e6eef8;             /* main text */
+  --accent: #7cf3d4;           /* accent / success */
+  --accent-2: #7da4ff;         /* secondary accent */
+  --danger: #ff6b6b;           /* danger */
+  --glass: rgba(255,255,255,0.04);
+  --radius: 12px;
+  --shadow: 0 6px 24px rgba(3,6,23,0.6);
+  --transition: 240ms cubic-bezier(.2,.9,.3,1);
+  --max-width: 920px;
+  font-synthesis: none;
+}
+
+/* Light theme fallback (if you prefer) */
+[data-theme="light"]{
+  --bg: #f5f8fb;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --text: #0b1220;
+  --accent: #059669;
+  --accent-2: #2563eb;
+  --glass: rgba(11,18,32,0.03);
+  --shadow: 0 6px 18px rgba(15,23,42,0.06);
+}
+
+/* -------------------------
+   Global page layout
+   ------------------------- */
+*{box-sizing:border-box}
+html,body{
+  height:100%;
+  margin:0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(124,243,212,0.04), transparent 6%),
+              radial-gradient(1000px 400px at 90% 90%, rgba(125,164,255,0.03), transparent 8%),
+              var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:32px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Card wrapper */
+.app-card{
+  width:100%;
+  max-width:var(--max-width);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 20%), var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:28px;
+  display:grid;
+  grid-template-columns: 1fr 420px;
+  gap:24px;
+  align-items:start;
+  overflow:hidden;
+}
+
+/* Responsive stack */
+@media (max-width:920px){
+  .app-card{ grid-template-columns: 1fr; padding:20px; }
+}
+
+/* Left panel - form container */
+.form-wrap{
+  padding: 8px 6px;
+}
+
+/* Right panel - info / result */
+.side{
+  padding:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.03);
+  min-height:220px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:14px;
+}
+
+/* Headings */
+.app-title{
+  margin:0 0 12px 0;
+  font-size:20px;
+  letter-spacing:0.2px;
+  color:var(--text);
+}
+.app-sub{
+  margin:0 0 20px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* -------------------------
+   Form fields (floating label style)
+   ------------------------- */
+.form {
+  display:grid;
+  gap:14px;
+}
+
+.field {
+  position:relative;
+  display:block;
+}
+
+.input, .select {
+  width:100%;
+  padding:14px 14px 14px 14px;
+  border-radius:10px;
+  background:var(--glass);
+  border:1px solid rgba(255,255,255,0.04);
+  color:var(--text);
+  outline:none;
+  font-size:14px;
+  transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+}
+
+/* floating label */
+.field label{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  pointer-events:none;
+  color:var(--muted);
+  background:transparent;
+  padding:4px 6px;
+  transition: transform var(--transition), font-size var(--transition), top var(--transition), opacity var(--transition);
+  font-size:13px;
+}
+
+/* When input has focus or value */
+.input:focus, .select:focus { border-color: rgba(124,243,212,0.18); box-shadow: 0 6px 18px rgba(124,243,212,0.04); transform: translateY(-1px); }
+.input:focus + label,
+.input:not(:placeholder-shown) + label,
+.select:focus + label,
+.select:not(:placeholder-shown) + label{
+  top:6px;
+  transform:translateY(0);
+  font-size:11px;
+  color:var(--accent-2);
+  opacity:0.95;
+}
+
+/* Small helper / hint text */
+.hint { font-size:12px; color:var(--muted); margin-top:6px; }
+
+/* Grid rows for two-column fields on wide screens */
+.row {
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:12px;
+}
+@media (max-width:560px){ .row{ grid-template-columns: 1fr; } }
+
+/* -------------------------
+   Button styles
+   ------------------------- */
+.btn {
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 18px;
+  border-radius:12px;
+  border:0;
+  cursor:pointer;
+  background:linear-gradient(90deg, var(--accent), var(--accent-2));
+  color:#021022;
+  font-weight:600;
+  box-shadow: 0 8px 30px rgba(39,170,152,0.12);
+  transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+  will-change: transform;
+}
+.btn:active { transform:translateY(1px) scale(.998); }
+.btn:hover { transform:translateY(-4px) scale(1.01); filter:brightness(1.02); box-shadow: 0 18px 40px rgba(39,170,152,0.14); }
+
+/* Secondary button */
+.btn-ghost {
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.06);
+  color:var(--text);
+  box-shadow:none;
+}
+
+/* -------------------------
+   Result / status display
+   ------------------------- */
+.result {
+  padding:16px;
+  border-radius:10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  border:1px solid rgba(255,255,255,0.03);
+  min-height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+/* Message variants */
+.result .success {
+  color: #042d21;
+  background: linear-gradient(90deg, rgba(124,243,212,0.12), rgba(125,164,255,0.05));
+  padding:12px 14px;
+  border-radius:8px;
+  font-weight:700;
+}
+.result .danger {
+  color: #230101;
+  background: linear-gradient(90deg, rgba(255,107,107,0.12), rgba(255,107,107,0.03));
+  padding:12px 14px;
+  border-radius:8px;
+  font-weight:700;
+}
+
+/* small micro animation when result appears */
+@keyframes popIn {
+  from { transform:translateY(8px) scale(.98); opacity:0; }
+  to   { transform:none; opacity:1; }
+}
+.result{ animation: popIn 360ms var(--transition) both; }
+
+/* -------------------------
+   Tiny utilities
+   ------------------------- */
+.row-center { display:flex; gap:12px; align-items:center; }
+.small { font-size:12px; color:var(--muted); }
+.note { font-size:12px; color:var(--muted); margin-top:4px; }
+
+/* error state */
+.input.error {
+  border-color: rgba(255,107,107,0.28);
+  box-shadow: 0 8px 24px rgba(255,107,107,0.06);
+}
+
+/* Accessibility: focus ring visible */
+:focus{ outline: none; }
+.input:focus-visible, .btn:focus-visible {
+  box-shadow: 0 0 0 4px rgba(124,243,212,0.08);
+}
+
+/* -------------------------
+   Loader (CSS-only)
+   ------------------------- */
+.loader {
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:4px solid rgba(255,255,255,0.06);
+  border-top-color:var(--accent);
+  animation:spin 900ms linear infinite;
+  margin:auto;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+/* -------------------------
+   Footer small print
+   ------------------------- */
+.footer {
+  margin-top:14px;
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+}
+
+/* -------------------------
+   Small helpful classes for templates
+   ------------------------- */
+.hide { display:none !important; }
+.center { display:flex; align-items:center; justify-content:center; }
